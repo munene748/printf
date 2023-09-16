@@ -19,7 +19,7 @@
 #define LENGTH_LONG 2
 
 /**
- * structbuffer_s - defines a buffer structure
+ * struct buffer_s - defines a buffer structure
  * @buffer: a pointer to a charcter array
  * @start: a pointer to the start of the buffer
  * @len: the length of the string stored in the buffer
@@ -49,7 +49,7 @@ int convert_pointer(va_list args);
 int convert_reverse(va_list args);
 int convert_ROT13(va_list args);
 
-/*Funcction prototypes for handling flags,lengths,etc.*/
+/*Function prototypes for handling flags,lengths,etc.*/
 unsigned char handle_flags(const char *flags_str, char *index);
 unsigned char handle_length(const char *length_modifier, char *index);
 int handle_width(va_list args,const char *width_modifier, char *index);
