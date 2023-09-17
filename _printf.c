@@ -14,29 +14,26 @@ int _printf(const char *format, ...)
 	int printed_chars = 0;
 
 	if (format == NULL)
-<<<<<<< HEAD
 	return (-1);
-=======
-		return (-1);
->>>>>>> cb558f8d46a4e59bb78f14c74a54933434c146d7
+
 
 	va_start(arg, format);
 
 	while (format[i])
 	{
-<<<<<<< HEAD
+
 	if (format[i] == '%')
 	{
 	i++;
 	       	if (format[i] == '\0')
                  break;
-=======
+
 		if (format[i] == '%')
 		{
 			i++;
 			if (format[i] == '\0')
 				break;
->>>>>>> cb558f8d46a4e59bb78f14c74a54933434c146d7
+
 
 			switch (format[i])
 			{
@@ -83,11 +80,9 @@ int _printf(const char *format, ...)
 	}
 
 	va_end(arg);
-<<<<<<< HEAD
+
 
 	return (i);
-=======
-	return (printed_chars);
->>>>>>> cb558f8d46a4e59bb78f14c74a54933434c146d7
-}
 
+	return (printed_chars);
+}
