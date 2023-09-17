@@ -5,84 +5,62 @@
 /**
  * _printf - produces output according to a format
  * @format: string
- * Return: number of characters printed
+ * Return: number of characters printed (excluding the null byte)
  */
 int _printf(const char *format, ...)
 {
-	va_list arg;
-	int i = 0;
-	int printed_chars = 0;
+	va_list args;
+	int char_count = 0; /* Number of characters printed */
 
 	if (format == NULL)
-	return (-1);
+		return (-1);
 
+	va_start(args, format);
 
-	va_start(arg, format);
-
-	while (format[i])
+	while (*format)
 	{
-
-	if (format[i] == '%')
-	{
-	i++;
-	       	if (format[i] == '\0')
-                 break;
-
-		if (format[i] == '%')
+		if (*format == '%')
 		{
-			i++;
-			if (format[i] == '\0')
+			format++;
+
+			if (*format == '\0')
 				break;
 
-
-			switch (format[i])
+			if (*format == 'c')
 			{
-				case 'c':
+				int c = va_arg(args, int);
+				write(1, &c, 1);
+				char_count++;
+			}
+			else if (*format == 's')
+			{
+				char *s = va_arg(args, char *);
+				if (s != NULL)
 				{
-					int c = va_arg(arg, int);
-					write(1, &c, 1);
-					printed_chars++;
-					break;
-				}
-
-				case 's':
-				{
-					char *s1 = va_arg(arg, char *);
-					if (s1 != NULL)
+					while (*s)
 					{
-						while (*s1)
-						{
-							write(1, s1, 1);
-							s1++;
-							printed_chars++;
-						}
+						write(1, s, 1);
+						s++;
+						char_count++;
 					}
-					break;
 				}
-
-				case '%':
-					write(1, &format[i], 1);
-					printed_chars++;
-					break;
-
-				default:
-					write(1, &format[i], 1);
-					printed_chars++;
-					break;
+			}
+			else if (*format == '%')
+			{
+				write(1, "%", 1);
+				char_count++;
 			}
 		}
 		else
 		{
-			write(1, &format[i], 1);
-			printed_chars++;
+			write(1, format, 1);
+			char_count++;
 		}
-		i++;
+
+		format++;
 	}
 
-	va_end(arg);
-
-
-	return (i);
-
-	return (printed_chars);
+	va_end(args);
+	return (char_count);
 }
+
