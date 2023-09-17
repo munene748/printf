@@ -11,16 +11,16 @@ int _printf(const char *format, ...)
 	int i = 0;
 
 	if (format == NULL)
-                return (-1);
+	return (-1);
 
 	va_start(arg, format);
-	
+
 	while (format[i])
-        {
-		if (format[i] == '%')
-		{
-			i++;
-		 if (format[i] == '\0')
+	{
+	if (format[i] == '%')
+	{
+	i++;
+	       	if (format[i] == '\0')
                  break;
 
 		 switch (format[i])
@@ -63,5 +63,6 @@ int _printf(const char *format, ...)
 		i++;
 	}
 	va_end(arg);
+
 	return (i);
 }
