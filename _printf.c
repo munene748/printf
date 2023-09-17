@@ -13,11 +13,18 @@ int _printf(const char *format, ...)
     int i = 0;
     int printed_chars = 0;
 
+<<<<<<< HEAD
     if (format == NULL)
         return (-1);
+=======
+	if (format == NULL)
+	return (-1);
+
+>>>>>>> 0cbc678c2b0ec828dd3c015264fa9ec9b4be6cc5
 
     va_start(arg, format);
 
+<<<<<<< HEAD
     while (format[i])
     {
         if (format[i] == '%')
@@ -30,6 +37,23 @@ int _printf(const char *format, ...)
                 i++;
                 if (format[i] == '\0')
                     break;
+=======
+	while (format[i])
+	{
+
+	if (format[i] == '%')
+	{
+	i++;
+	       	if (format[i] == '\0')
+                 break;
+
+		if (format[i] == '%')
+		{
+			i++;
+			if (format[i] == '\0')
+				break;
+
+>>>>>>> 0cbc678c2b0ec828dd3c015264fa9ec9b4be6cc5
 
                 switch (format[i])
                 {
@@ -82,7 +106,16 @@ int _printf(const char *format, ...)
         }
     }
 
+<<<<<<< HEAD
     va_end(arg);
     return (printed_chars);
 }
+=======
+	va_end(arg);
 
+
+	return (i);
+>>>>>>> 0cbc678c2b0ec828dd3c015264fa9ec9b4be6cc5
+
+	return (printed_chars);
+}
