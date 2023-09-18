@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/* Macros for buffer size */
+#define BUFFER_SIZE 1024
+
 /* Macros for flag characters */
 #define PLUS 1
 #define SPACE 2
@@ -26,8 +29,8 @@
 /**
  * struct buffer_s - Defines a buffer structure.
  * @buffer: A pointer to a character array.
- * @start: A pointer to the start of the buffer.
- * @len: The length of the string stored in the buffer.
+ * @start: A pointer to the start of buffer.
+ * @len: The length of the string stored in buffer.
  */
 typedef struct buffer_s
 {
@@ -40,19 +43,32 @@ typedef struct buffer_s
 int _printf(const char *format, ...);
 
 /* Converters */
-unsigned int convert_char(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_str(va_list args, buffer_t *output, unsigned char flags, int width, unsigned char length);
-unsigned int convert_int(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_percent(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_binary(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_unsigned(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_octal(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_hex(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_HEX(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_specialStr(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_pointer(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_reverse(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
-unsigned int convert_ROT13(va_list args, buffer_t *output, unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_char(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_str(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_int(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_percent(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_binary(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_unsigned(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_octal(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_hex(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_HEX(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_specialStr(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_pointer(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_reverse(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
+unsigned int convert_ROT13(va_list args, buffer_t *output,
+unsigned char flags, int width, int precision, unsigned char length);
 
 /* Handlers */
 unsigned char handle_flags(const char *flags_str, char *index);

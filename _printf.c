@@ -1,89 +1,120 @@
 #include "main.h"
+#include <stdio.h>
 #include <unistd.h>
-#include <stdarg.h>
-#include <stdio.h> /* For sprintf */
-
-#define BUFF_SIZE 1024
 
 /**
- * print_buffer - Prints buffer contents.
- * @buffer: Array of characters.
- * @buff_ind: Index for the next character, resets to 0.
- */
-void print_buffer(char buffer[], int *buff_ind)
-{
-	if (*buff_ind > 0)
-		write(1, &buffer[0], *buff_ind);
-	*buff_ind = 0;
-}
-
-/**
- * _printf - Custom printf function.
- * @format: Format string.
- *
+ * _printf - Custom printf function with buffer.
+ * @format: A format string.
  * Return: Number of characters printed (excluding null byte).
  */
 int _printf(const char *format, ...)
 {
-	int i, char_count = 0;
-	int buff_ind = 0;
-	va_list list;
-	char buffer[BUFF_SIZE];
+    va_list args; /* A variable-length argument list. */
+    buffer_t output_buffer; /* Define a buffer structure. */
+    int printed_chars = 0;
 
-	if (!format)
-		return (-1);
+    va_start(args, format);
 
-	va_start(list, format);
+    /* Initialize the buffer with an array of characters */
+    output_buffer.buffer = malloc(BUFFER_SIZE);
+    if (output_buffer.buffer == NULL)
+    {
+        va_end(args);
+        return (-1); /* Error handling for buffer allocation failure */
+    }
 
-	for (i = 0; format[i]; i++)
-	{
-		if (format[i] != '%')
-		{
-			buffer[buff_ind++] = format[i];
-			if (buff_ind == BUFF_SIZE)
-				print_buffer(buffer, &buff_ind);
-			char_count++;
-		}
-		else
-		{
-			print_buffer(buffer, &buff_ind);
-			i++;
-			if (format[i] == 'c')
-			{
-				int c = va_arg(list, int);
-				buffer[buff_ind++] = c;
-				char_count++;
-			}
-			else if (format[i] == 's')
-			{
-				char *s = va_arg(list, char *);
-				if (s)
-				{
-					while (*s)
-					{
-						buffer[buff_ind++] = *s++;
-						char_count++;
-					}
-				}
-			}
-			else if (format[i] == 'd' || format[i] == 'u')
-			{
-				char num_str[20];
-				int num = va_arg(list, int);
-				sprintf(num_str, (format[i] == 'd') ? "%d" : "%u", num);
-				int j;
-				for (j = 0; num_str[j]; j++)
-				{
-					buffer[buff_ind++] = num_str[j];
-					char_count++;
-				}
-			}
-		}
-	}
+    output_buffer.start = output_buffer.buffer;
+    output_buffer.len = 0;
 
-	print_buffer(buffer, &buff_ind);
-	va_end(list);
+    int i; /* Declare 'i' at the beginning of the function */
+    for (i = 0; format[i] != '\0'; i++)
+    {
+        if (format[i] != '%')
+        {
+            /* Add the character to the buffer */
+            if (output_buffer.len < BUFFER_SIZE - 1)
+            {
+                output_buffer.buffer[output_buffer.len] = format[i];
+                output_buffer.len++;
+            }
+            else
+            {
+                /* Buffer is full, write it to stdout and reset it */
+                output_buffer.buffer[output_buffer.len] = '\0';
+                write(1, output_buffer.buffer, output_buffer.len);
+                output_buffer.len = 0;
+            }
 
-	return (char_count);
+            printed_chars++;
+        }
+        else
+        {
+            i++; /* Move to the next character after '%' */
+            if (format[i] == '\0')
+                break;
+
+            /* Handle format specifiers using your custom functions */
+            switch (format[i])
+            {
+                case 'c':
+                    printed_chars += convert_char(args, &output_buffer, 0, 0, 0, 0);
+                    break;
+
+                case 's':
+                    printed_chars += convert_str(args, &output_buffer, 0, 0, 0, 0);
+                    break;
+
+                case '%':
+                    /* Add the '%' character to the buffer */
+                    if (output_buffer.len < BUFFER_SIZE - 1)
+                    {
+                        output_buffer.buffer[output_buffer.len] = '%';
+                        output_buffer.len++;
+                    }
+                    else
+                    {
+                        /* Buffer is full, write it to stdout and reset it */
+                        output_buffer.buffer[output_buffer.len] = '\0';
+                        write(1, output_buffer.buffer, output_buffer.len);
+                        output_buffer.len = 0;
+                    }
+
+                    printed_chars++;
+                    break;
+
+                /* Add more cases for other format specifiers as needed */
+
+                default:
+                    /* Print the '%' character itself and the unknown specifier */
+                    if (output_buffer.len < BUFFER_SIZE - 2)
+                    {
+                        output_buffer.buffer[output_buffer.len] = '%';
+                        output_buffer.buffer[output_buffer.len + 1] = format[i];
+                        output_buffer.len += 2;
+                    }
+                    else
+                    {
+                        /* Buffer is full, write it to stdout and reset it */
+                        output_buffer.buffer[output_buffer.len] = '\0';
+                        write(1, output_buffer.buffer, output_buffer.len);
+                        output_buffer.len = 0;
+                    }
+
+                    printed_chars += 2;
+            }
+        }
+    }
+
+    /* Write any remaining content in the buffer to stdout */
+    if (output_buffer.len > 0)
+    {
+        output_buffer.buffer[output_buffer.len] = '\0';
+        write(1, output_buffer.buffer, output_buffer.len);
+    }
+
+    free(output_buffer.buffer);
+    va_end(args);
+
+    return (printed_chars);
 }
 
