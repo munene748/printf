@@ -1,8 +1,8 @@
 #include "main.h"
 
 unsigned int convert_string(va_list args, buffer_t *buffer_output,
-                            unsigned char format_flags,int width,
-                            int precision, unsigned charlength_modifier)
+		unsigned char format_flags, int width, int precision,
+		unsigned char length_modifier);
 unsigned int convert_string_caps(va_list args, buffer_t *buffer_output,
 		unsigned char format_flags, int width, int precision,
 		unsigned char length_modifier);
@@ -12,7 +12,6 @@ unsigned int convert_reversed(va_list args, buffer_t *buffer_output,
 unsigned int convert_rot13(va_list args, buffer_t *buffer_output,
 		unsigned char format_flags, int width, int precision,
 		unsigned char length_modifier);
-
 
 /**
  * convert_string - Converts an argument to a string and writes it into a buffer.
@@ -29,14 +28,14 @@ unsigned int convert_string(va_list args, buffer_t *buffer_output,
 		unsigned char format_flags, int width, int precision,
 		unsigned char length_modifier)
 {
-char *input_string, *null_string = "(null)";
+	char *input_string, *null_string = "(null)";
 	int string_length;
 	unsigned int bytes_written = 0;
 
 	(void)format_flags;
 	(void)length_modifier;
 
-	input_string = va_arg(arg, char *);
+	input_string = va_arg(args, char *);
 	if (input_string == NULL)
 		return (_memcpy(buffer_output, null_string, 6));
 
@@ -114,7 +113,8 @@ unsigned int convert_string_caps(va_list args, buffer_t *buffer_output,
 		bytes_written += _memcpy(buffer_output,
 		(input_string + char_index), 1);
 	}
-bytes_written += print_neg_width(buffer_output,
+
+	bytes_written += print_neg_width(buffer_output,
 	bytes_written, format_flags, width);
 
 	return (bytes_written);
