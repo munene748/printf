@@ -88,7 +88,7 @@ int print_string(va_list args, char buffer[],
 int print_percent(va_list args, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	UNUSED(types);
+	UNUSED(args);
 	UNUSED(buffer);
 	UNUSED(flags);
 	UNUSED(width);
@@ -116,7 +116,7 @@ int print_int(va_list args, char buffer[],
 	long int j = va_arg(args, long int);
 	unsigned long int num;
 
-	j = convert_size_number(n, size);
+	j = convert_size_number(j, size);
 
 	if (j == 0)
 		buffer[i--] = '0';

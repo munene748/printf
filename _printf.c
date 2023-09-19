@@ -33,15 +33,15 @@ int _printf(const char *format, ...)
 		{
 			print_buffer(buffer, &buff_ind);
 			flags = get_flags(format, &i);
-			width = get_width(format, &i, list);
-			precision = get_precision(format, &i, list);
+			width = get_width(format, &i, args);
+			precision = get_precision(format, &i, args);
 			size = get_size(format, &i);
 			++i;
-			print = handle_print(format, &i, list, buffer,
+			print = handle_print(format, &i, args, buffer,
 				flags, width, precision, size);
 			if (print == -1)
 				return (-1);
-			printed_chars += printed;
+			printed_chars += print;
 		}
 	}
 
