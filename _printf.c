@@ -26,7 +26,7 @@ int _printf(const char *format, ...)
     output_buffer.start = output_buffer.buffer;
     output_buffer.len = 0;
 
-    int i; /* Declare 'i' at the beginning of the function */
+    int i;
     for (i = 0; format[i] != '\0'; i++)
     {
         if (format[i] != '%')
